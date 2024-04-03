@@ -1,0 +1,1 @@
+# firestore-emulator-container-image
