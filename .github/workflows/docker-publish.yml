@@ -45,7 +45,10 @@ jobs:
       - name: Debug
         run: |
           echo "${{ steps.meta.outputs.tags }}"
+          echo "----------------------------------------------"
           echo "${{ steps.meta.outputs.labels }}"
+          echo "----------------------------------------------"
+          echo "${{ steps.meta.outputs.annotations }}"
 
       - name: Build and push Docker image
         id: build-and-push
@@ -54,6 +57,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Sign the published Docker image
