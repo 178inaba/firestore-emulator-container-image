@@ -60,3 +60,7 @@ jobs:
           annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # TODO
+      - name: Debug
+        run: docker buildx imagetools inspect ghcr.io/178inaba/firestore-emulator --raw
