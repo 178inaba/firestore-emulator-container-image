@@ -36,8 +36,8 @@ jobs:
           tags: |
             type=sha,prefix=
             type=raw,value=latest,enable={{is_default_branch}}
-          #labels: |
-          #  org.opencontainers.image.description=Local Firestore emulator.
+          labels: |
+            org.opencontainers.image.description=Local Firestore emulator.
           annotations: |
             org.opencontainers.image.description=Local Firestore emulator.
 
