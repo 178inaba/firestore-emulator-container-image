@@ -35,16 +35,6 @@ jobs:
           tags: |
             type=sha,prefix=
             type=raw,value=latest,enable={{is_default_branch}}
-
-      # TODO
-      - name: Debug
-        run: |
-          echo "${{ steps.meta.outputs.tags }}"
-          echo "----------------------------------------------"
-          echo "${{ steps.meta.outputs.labels }}"
-          echo "----------------------------------------------"
-          echo "${{ steps.meta.outputs.annotations }}"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
