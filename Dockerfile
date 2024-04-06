@@ -1,5 +1,7 @@
 FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
 
+LABEL org.opencontainers.image.description Local Firestore emulator.
+
 ENV DATABASE_MODE=firestore-native
 ENV HOST_PORT=0.0.0.0:8080
 
