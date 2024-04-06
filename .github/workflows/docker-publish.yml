@@ -19,9 +19,6 @@ jobs:
       packages: write
       id-token: write
     steps:
-      - name: Install cosign
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: sigstore/cosign-installer@v3.4.0
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log into registry ${{ env.REGISTRY }}
@@ -63,14 +60,3 @@ jobs:
           annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: |
-
-          # TODO
-          echo "${TAGS}" | xargs -I {} echo "{}@${DIGEST}"
-
-          echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
