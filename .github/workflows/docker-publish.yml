@@ -18,8 +18,6 @@ jobs:
       packages: write
       id-token: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Install cosign
         if: ${{ github.event_name != 'pull_request' }}
         uses: sigstore/cosign-installer@v3.4.0
@@ -48,7 +46,6 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v5
         with:
-          #context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
