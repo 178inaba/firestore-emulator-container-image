@@ -15,10 +15,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/firestore-emulator
-
 jobs:
   build-publish:
     name: Build and Publish
@@ -28,6 +24,9 @@ jobs:
       contents: read
       packages: write
       id-token: write
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository_owner }}/firestore-emulator
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
@@ -85,7 +84,7 @@ jobs:
       - build-publish
     services:
       datastore-emulator:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.build-publish.outputs.digest }}
+        image: ghcr.io/178inaba/firestore-emulator@${{ needs.build-publish.outputs.digest }}
         ports:
           - 8080:8080
         env:
