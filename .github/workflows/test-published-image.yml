@@ -1,0 +1,28 @@
+name: Test Published Image
+
+on:
+  registry_package:
+    types:
+      - published
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      datastore-emulator:
+        image: ghcr.io/178inaba/firestore-emulator
+        ports:
+          - 8080:8080
+        env:
+          DATABASE_MODE: datastore-mode
+    env:
+      DATASTORE_EMULATOR_HOST: localhost:8080
+    steps:
+      - name: Test
+        run: curl -f localhost:8080
