@@ -38,7 +38,7 @@ jobs:
         id: dependabot-metadata
         uses: dependabot/fetch-metadata@v2
       - name: Debug
-        run: echo ${{ toJSON(steps.dependabot-metadata.outputs) }}
+        run: echo ${{ steps.dependabot-metadata.outputs.new-version }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
