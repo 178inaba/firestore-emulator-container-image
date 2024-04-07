@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - Dockerfile
+      - ".github/**"
   pull_request:
     paths:
       - Dockerfile
@@ -29,6 +30,14 @@ jobs:
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
+
+      # TODO
+      - name: Dependabot metadata
+        id: dependabot-metadata
+        uses: dependabot/fetch-metadata@v2
+      - name: Debug
+        run: echo ${{ steps.dependabot-metadata.outputs }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log into Docker Hub
