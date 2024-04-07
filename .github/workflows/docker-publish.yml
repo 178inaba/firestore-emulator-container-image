@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - Dockerfile
-      - .github/workflows/docker-publish.yml # TODO
   pull_request:
     paths:
       - Dockerfile
