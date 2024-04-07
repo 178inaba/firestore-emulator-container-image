@@ -31,15 +31,6 @@ jobs:
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
-
-      # TODO
-      - name: Dependabot metadata
-        if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
-        id: dependabot-metadata
-        uses: dependabot/fetch-metadata@v2
-      - name: Debug
-        run: echo ${{ steps.dependabot-metadata.outputs.new-version }}
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log into Docker Hub
@@ -55,6 +46,11 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug
+        id: a
+        run: echo "base-image-version=$(cat Dockerfile | head -n 1 | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
+
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -65,6 +61,8 @@ jobs:
           tags: |
             type=sha,prefix=
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ steps.a.outputs.base-image-version }},enable={{is_default_branch}}
+
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
       - name: Build and push Docker image
