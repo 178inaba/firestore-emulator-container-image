@@ -22,6 +22,9 @@ jobs:
     env:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository_owner }}/firestore-emulator
+    outputs:
+      imageid: ${{ steps.build-and-push.outputs.imageid }}
+      digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -51,6 +54,7 @@ jobs:
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
       - name: Build and push Docker image
+        id: build-and-push
         uses: docker/build-push-action@v5
         with:
           push: ${{ github.event_name != 'pull_request' }}
@@ -76,5 +80,8 @@ jobs:
     env:
       DATASTORE_EMULATOR_HOST: localhost:8080
     steps:
+      - run: |
+        echo ${{needs.build-publish.outputs.imageid}}
+        echo ${{needs.build-publish.outputs.digest}}
       - name: Test
         run: curl -f localhost:8080
