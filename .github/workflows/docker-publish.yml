@@ -23,7 +23,6 @@ jobs:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository_owner }}/firestore-emulator
     outputs:
-      imageid: ${{ steps.build-and-push.outputs.imageid }}
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
       - name: Set up Docker Buildx
@@ -80,8 +79,5 @@ jobs:
     env:
       DATASTORE_EMULATOR_HOST: localhost:8080
     steps:
-      - run: |
-          echo ${{ needs.build-publish.outputs.imageid }}
-          echo ${{ needs.build-publish.outputs.digest }}
       - name: Test
         run: curl -f localhost:8080
