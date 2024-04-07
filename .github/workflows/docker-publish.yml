@@ -6,11 +6,9 @@ on:
       - main
     paths:
       - Dockerfile
-      - ".github/**" # TODO
   pull_request:
     paths:
       - Dockerfile
-      - ".github/**" # TODO
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -48,11 +46,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debug
-        id: a
+      - name: Get gcloud version
+        id: gcloud-version
         run: echo "gcloud-version=$(cat Dockerfile | head -n 1 | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
-
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -62,9 +58,8 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,prefix=
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=${{ steps.a.outputs.gcloud-version }},enable={{is_default_branch}}
-
+            type=raw,value=latest
+            type=raw,value=${{ steps.gcloud-version.outputs.gcloud-version }}
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
       - name: Build and push Docker image
@@ -80,6 +75,7 @@ jobs:
 
   test-published-image:
     name: Test Published Image
+    if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs:
