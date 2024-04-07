@@ -81,7 +81,7 @@ jobs:
       DATASTORE_EMULATOR_HOST: localhost:8080
     steps:
       - run: |
-        echo ${{needs.build-publish.outputs.imageid}}
-        echo ${{needs.build-publish.outputs.digest}}
+          echo ${{ needs.build-publish.outputs.imageid }}
+          echo ${{ needs.build-publish.outputs.digest }}
       - name: Test
         run: curl -f localhost:8080
