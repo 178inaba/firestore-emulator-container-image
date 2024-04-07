@@ -6,10 +6,11 @@ on:
       - main
     paths:
       - Dockerfile
-      - ".github/**"
+      - ".github/**" # TODO
   pull_request:
     paths:
       - Dockerfile
+      - ".github/**" # TODO
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -33,6 +34,7 @@ jobs:
 
       # TODO
       - name: Dependabot metadata
+        if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
         id: dependabot-metadata
         uses: dependabot/fetch-metadata@v2
       - name: Debug
