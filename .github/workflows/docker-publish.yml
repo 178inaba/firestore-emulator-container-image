@@ -60,7 +60,7 @@ jobs:
           tags: |
             type=raw,value=latest
             type=raw,value=${{ steps.gcloud-version.outputs.gcloud-version }}
-            #type=sha,prefix=
+            type=sha,prefix=
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
       - name: Build and push Docker image
