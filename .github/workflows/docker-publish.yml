@@ -49,7 +49,7 @@ jobs:
 
       - name: Debug
         id: a
-        run: echo "base-image-version=$(cat Dockerfile | head -n 1 | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
+        run: echo "gcloud-version=$(cat Dockerfile | head -n 1 | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
 
       - name: Extract Docker metadata
         id: meta
@@ -61,7 +61,7 @@ jobs:
           tags: |
             type=sha,prefix=
             type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=${{ steps.a.outputs.base-image-version }},enable={{is_default_branch}}
+            type=raw,value=${{ steps.a.outputs.gcloud-version }},enable={{is_default_branch}}
 
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
