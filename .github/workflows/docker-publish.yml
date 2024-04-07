@@ -72,7 +72,7 @@ jobs:
       - build-publish
     services:
       datastore-emulator:
-        image: ghcr.io/178inaba/firestore-emulator
+        image: ghcr.io/178inaba/firestore-emulator@${{ needs.build-publish.outputs.digest }}
         ports:
           - 8080:8080
         env:
