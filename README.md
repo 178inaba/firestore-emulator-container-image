@@ -1,5 +1,7 @@
 # Firestore Emulator Container Image
 
+[![Publish Docker Image](https://github.com/178inaba/firestore-emulator-container-image/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/178inaba/firestore-emulator-container-image/actions/workflows/docker-publish.yml)
+
 ## Usage
 
 ```console
