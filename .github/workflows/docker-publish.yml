@@ -60,6 +60,8 @@ jobs:
             type=sha,prefix=
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
+      # TODO Debug
+      - run: docker buildx ls
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
