@@ -19,9 +19,9 @@ jobs:
     name: Build and Publish
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    #permissions:
+    permissions:
     #  contents: read
-    #  packages: write
+      packages: write
     #  id-token: write
     env:
       REGISTRY: ghcr.io
