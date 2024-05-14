@@ -81,6 +81,7 @@ jobs:
         with:
           subject-name: ${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
+          push-to-registry: true
 
   test-published-image:
     name: Test Published Image
