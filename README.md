@@ -51,7 +51,7 @@ services:
       test: ['CMD', 'curl', '-f', 'localhost:8080']
 
   app:
-    ...
+    build: .
     environment:
       FIRESTORE_EMULATOR_HOST: firestore:8080
       DATASTORE_EMULATOR_HOST: datastore:8080
