@@ -15,7 +15,7 @@ type Issue struct {
 	Title string
 }
 
-// $ DATASTORE_EMULATOR_HOST=localhost:8081 FIRESTORE_EMULATOR_HOST=localhost:8080 go run main.go
+// $ FIRESTORE_EMULATOR_HOST=localhost:8080 DATASTORE_EMULATOR_HOST=localhost:8081 go run main.go
 func main() {
 	ctx := context.Background()
 
