@@ -7,8 +7,6 @@ services:
       - 8080:8080
     healthcheck:
       test: ['CMD', 'curl', '-f', 'localhost:8080']
-      start_period: 10s
-      start_interval: 1s
 
   datastore:
     image: ghcr.io/178inaba/firestore-emulator
@@ -18,8 +16,6 @@ services:
       DATABASE_MODE: datastore-mode
     healthcheck:
       test: ['CMD', 'curl', '-f', 'localhost:8080']
-      start_period: 10s
-      start_interval: 1s
 
   app:
     build:
@@ -35,7 +31,5 @@ services:
     depends_on:
       firestore:
         condition: service_healthy
-        restart: true
       datastore:
         condition: service_healthy
-        restart: true
