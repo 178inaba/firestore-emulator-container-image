@@ -10,7 +10,7 @@ $ docker run -d --name datastore-emulator -e DATABASE_MODE=datastore-mode -p 808
 
 ### GitHub Actions
 
-```yml
+```yaml
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -28,6 +28,38 @@ jobs:
         run: |
           # Replace this with running tests for your app.
           curl -f localhost:8080
+```
+
+### Docker Compose
+
+```yaml
+services:
+  firestore:
+    image: ghcr.io/178inaba/firestore-emulator
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'localhost:8080']
+
+  datastore:
+    image: ghcr.io/178inaba/firestore-emulator
+    ports:
+      - 8081:8080
+    environment:
+      DATABASE_MODE: datastore-mode
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'localhost:8080']
+
+  app:
+    build: .
+    environment:
+      FIRESTORE_EMULATOR_HOST: firestore:8080
+      DATASTORE_EMULATOR_HOST: datastore:8080
+    depends_on:
+      firestore:
+        condition: service_healthy
+      datastore:
+        condition: service_healthy
 ```
 
 ## Environment Variables
