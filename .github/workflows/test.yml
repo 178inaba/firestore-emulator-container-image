@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-publish:
-    name: Build and Publish
+  test:
+    name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -19,17 +19,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build and push Docker image
-        id: build-and-push
+      - name: Build
         uses: docker/build-push-action@v6
         with:
           load: true
-          tags: test
+          tags: temp
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Test
         timeout-minutes: 1
         run: |
-          docker run -d -e DATABASE_MODE=datastore-mode -p 8080:8080 test
-          while [ "$(curl -s -o '/dev/null' -w '%{http_code}' 'localhost:8080')" != '200' ]; do echo 'Waiting healthcheck...'; sleep 1; done
-          curl -f localhost:8080
+          docker run -d -e DATABASE_MODE=datastore-mode -p 8080:8080 temp
+          while [ "$(curl -s -o '/dev/null' -w '%{http_code}' 'localhost:8080')" != '200' ]; do echo 'Waiting health check...'; sleep 1; done
+          echo 'Health check passed!'
