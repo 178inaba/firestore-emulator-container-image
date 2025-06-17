@@ -30,4 +30,5 @@ jobs:
       - name: Test
         run: |
           docker run -d -e DATABASE_MODE=datastore-mode -p 8080:8080 test
+          sleep 30
           curl -f localhost:8080
