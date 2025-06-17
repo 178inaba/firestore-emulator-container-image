@@ -28,7 +28,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Test
+        timeout-minutes: 1
         run: |
           docker run -d -e DATABASE_MODE=datastore-mode -p 8080:8080 test
-          sleep 30
+          while [ "$(curl -s -o '/dev/null' -w '%{http_code}' 'localhost:8080')" != '200' ]; do echo 'Waiting healthcheck...'; sleep 1; done
           curl -f localhost:8080
