@@ -76,6 +76,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+      - name: Test
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          docker run -d -e DATABASE_MODE=datastore-mode -p 8080:8080 ${{ env.IMAGE_NAME }}
+          curl -f localhost:8080
       - name: Generate build image attestation
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/attest-build-provenance@v2
