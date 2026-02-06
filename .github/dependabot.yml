@@ -1,14 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
+      interval: daily
     assignees:
-      - "178inaba"
-  - package-ecosystem: "docker"
-    directory: "/"
+      - 178inaba
+  - package-ecosystem: docker
+    directories:
+      - /firestore
+      - /pubsub
     schedule:
-      interval: "daily"
+      interval: daily
     assignees:
-      - "178inaba"
+      - 178inaba

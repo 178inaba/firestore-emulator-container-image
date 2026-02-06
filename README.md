@@ -1,6 +1,6 @@
 # Google Cloud Emulators
 
-[![Publish Docker Image](https://github.com/178inaba/gcloud-emulators/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/docker-publish.yml)
+[![Publish Docker Image](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-docker-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-docker-publish.yml)
 
 ## Usage
 

@@ -1,9 +1,12 @@
-name: Test
+name: Test Firestore
 
 on:
   pull_request:
     branches:
       - main
+    paths:
+      - firestore/Dockerfile
+      - .github/workflows/firestore-test.yml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,6 +25,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
+          context: firestore
           load: true
           tags: temp
           cache-from: type=gha

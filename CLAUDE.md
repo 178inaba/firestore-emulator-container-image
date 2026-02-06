@@ -14,7 +14,7 @@ No build system or test framework. Everything runs through Docker and GitHub Act
 
 ```bash
 # Build
-docker build -t firestore-emulator .
+docker build -t firestore-emulator firestore/
 
 # Run (Firestore Native mode)
 docker run -p 8080:8080 firestore-emulator
@@ -29,7 +29,7 @@ curl -f localhost:8080
 ### Pub/Sub Emulator
 
 ```bash
-# Build (context is pubsub/ directory)
+# Build
 docker build -t pubsub-emulator pubsub/
 
 # Run
@@ -41,12 +41,12 @@ curl -f localhost:8085
 
 ## Repository Structure
 
-- `Dockerfile` — Firestore emulator image (port 8080)
+- `firestore/Dockerfile` — Firestore emulator image (port 8080)
 - `pubsub/Dockerfile` — Pub/Sub emulator image (port 8085)
 - `.github/workflows/` — CI/CD workflows
-  - `docker-publish.yml` — Build and publish Firestore image on merge to main
+  - `firestore-docker-publish.yml` — Build and publish Firestore image on merge to main (only on `firestore/` path changes)
   - `pubsub-docker-publish.yml` — Build and publish Pub/Sub image on merge to main (only on `pubsub/` path changes)
-  - `test.yml` — Build and health-check test Firestore image on PR
+  - `firestore-test.yml` — Build and health-check test Firestore image on PR (only on `firestore/` path changes)
   - `pubsub-test.yml` — Build and health-check test Pub/Sub image on PR (only on `pubsub/` path changes)
 - `examples/docker-compose/` — Example Go application using Firestore/Datastore
 
@@ -61,4 +61,4 @@ curl -f localhost:8085
 
 - Firestore Dockerfile uses `sh -c` to run the command because it needs shell expansion for the `DATABASE_MODE` environment variable
 - Pub/Sub emulator requires the `beta` subcommand: `gcloud beta emulators pubsub start`
-- Pub/Sub workflows use path filters — they only trigger on changes to `pubsub/Dockerfile` and corresponding workflow files
+- All workflows use path filters — they only trigger on changes to their respective Dockerfile and corresponding workflow files
