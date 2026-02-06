@@ -1,4 +1,4 @@
-module github.com/178inaba/firestore-emulator-container-image/examples/docker-compose
+module github.com/178inaba/gcloud-emulators/examples/docker-compose
 
 go 1.24.1
 

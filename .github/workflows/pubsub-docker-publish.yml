@@ -12,6 +12,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/pubsub-emulator
+
 jobs:
   build-publish:
     name: Build and Publish
@@ -22,9 +26,6 @@ jobs:
       contents: read
       id-token: write
       packages: write
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository_owner }}/pubsub-emulator
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
@@ -88,7 +89,7 @@ jobs:
       - build-publish
     services:
       pubsub-emulator:
-        image: ghcr.io/178inaba/pubsub-emulator@${{ needs.build-publish.outputs.digest }}
+        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.build-publish.outputs.digest }}
         ports:
           - 8085:8085
     env:
