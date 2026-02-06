@@ -11,9 +11,18 @@ concurrency:
 
 jobs:
   test:
-    name: Test
+    name: Test (${{ matrix.emulator }})
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      matrix:
+        include:
+          - emulator: firestore
+            port: 8080
+            docker-run-args: "-e DATABASE_MODE=datastore-mode -p 8080:8080"
+          - emulator: pubsub
+            port: 8085
+            docker-run-args: "-p 8085:8085"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -22,6 +31,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
+          context: ${{ matrix.emulator }}
           load: true
           tags: temp
           cache-from: type=gha
@@ -29,6 +39,6 @@ jobs:
       - name: Test
         timeout-minutes: 1
         run: |
-          docker run -d -e DATABASE_MODE=datastore-mode -p 8080:8080 temp
-          while [ "$(curl -s -o '/dev/null' -w '%{http_code}' 'localhost:8080')" != '200' ]; do echo 'Waiting health check...'; sleep 1; done
+          docker run -d ${{ matrix.docker-run-args }} temp
+          while [ "$(curl -s -o '/dev/null' -w '%{http_code}' 'localhost:${{ matrix.port }}')" != '200' ]; do echo 'Waiting health check...'; sleep 1; done
           echo 'Health check passed!'
