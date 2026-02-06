@@ -44,10 +44,9 @@ curl -f localhost:8085
 - `firestore/Dockerfile` — Firestore emulator image (port 8080)
 - `pubsub/Dockerfile` — Pub/Sub emulator image (port 8085)
 - `.github/workflows/` — CI/CD workflows
-  - `firestore-docker-publish.yml` — Build and publish Firestore image on merge to main (only on `firestore/` path changes)
-  - `pubsub-docker-publish.yml` — Build and publish Pub/Sub image on merge to main (only on `pubsub/` path changes)
-  - `firestore-test.yml` — Build and health-check test Firestore image on PR (only on `firestore/` path changes)
-  - `pubsub-test.yml` — Build and health-check test Pub/Sub image on PR (only on `pubsub/` path changes)
+  - `firestore-publish.yml` — Build and publish Firestore image on merge to main (only on `firestore/` path changes)
+  - `pubsub-publish.yml` — Build and publish Pub/Sub image on merge to main (only on `pubsub/` path changes)
+  - `test.yml` — Build and health-check test both emulator images on PR
 - `examples/docker-compose/` — Example Go application using Firestore/Datastore
 
 ## CI/CD

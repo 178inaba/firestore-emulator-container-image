@@ -1,7 +1,7 @@
 # Google Cloud Emulators
 
-[![Publish Firestore Docker Image](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-docker-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-docker-publish.yml)
-[![Publish Pub/Sub Docker Image](https://github.com/178inaba/gcloud-emulators/actions/workflows/pubsub-docker-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/pubsub-docker-publish.yml)
+[![Publish Firestore Docker Image](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-publish.yml)
+[![Publish Pub/Sub Docker Image](https://github.com/178inaba/gcloud-emulators/actions/workflows/pubsub-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/pubsub-publish.yml)
 
 ## Usage
 
