@@ -89,7 +89,7 @@ jobs:
       - build-publish
     services:
       pubsub-emulator:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.build-publish.outputs.digest }}
+        image: ghcr.io/${{ github.repository_owner }}/pubsub-emulator@${{ needs.build-publish.outputs.digest }}
         ports:
           - 8085:8085
     env:

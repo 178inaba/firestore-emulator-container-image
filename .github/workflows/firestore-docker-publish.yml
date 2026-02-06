@@ -89,7 +89,7 @@ jobs:
       - build-publish
     services:
       datastore-emulator:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.build-publish.outputs.digest }}
+        image: ghcr.io/${{ github.repository_owner }}/firestore-emulator@${{ needs.build-publish.outputs.digest }}
         ports:
           - 8080:8080
         env:
