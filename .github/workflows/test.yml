@@ -19,10 +19,10 @@ jobs:
         include:
           - emulator: firestore
             port: 8080
-            docker_run_args: "-e DATABASE_MODE=datastore-mode -p 8080:8080"
+            docker-run-args: "-e DATABASE_MODE=datastore-mode -p 8080:8080"
           - emulator: pubsub
             port: 8085
-            docker_run_args: "-p 8085:8085"
+            docker-run-args: "-p 8085:8085"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -39,6 +39,6 @@ jobs:
       - name: Test
         timeout-minutes: 1
         run: |
-          docker run -d ${{ matrix.docker_run_args }} temp
+          docker run -d ${{ matrix.docker-run-args }} temp
           while [ "$(curl -s -o '/dev/null' -w '%{http_code}' 'localhost:${{ matrix.port }}')" != '200' ]; do echo 'Waiting health check...'; sleep 1; done
           echo 'Health check passed!'
