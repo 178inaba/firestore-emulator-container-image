@@ -60,4 +60,4 @@ curl -f localhost:8085
 
 - Firestore Dockerfile uses `sh -c` to run the command because it needs shell expansion for the `DATABASE_MODE` environment variable
 - Pub/Sub emulator requires the `beta` subcommand: `gcloud beta emulators pubsub start`
-- All workflows use path filters — they only trigger on changes to their respective Dockerfile and corresponding workflow files
+- Publish workflows use path filters — they only trigger on changes to their respective Dockerfile and corresponding workflow files
