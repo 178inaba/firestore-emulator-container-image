@@ -1,12 +1,12 @@
-name: Publish Firestore Emulator
+name: Publish Pub/Sub Emulator
 
 on:
   push:
     branches:
       - main
     paths:
-      - firestore/Dockerfile
-      - .github/workflows/firestore-publish.yml
+      - pubsub/Dockerfile
+      - .github/workflows/publish-pubsub.yml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,7 +23,7 @@ jobs:
       packages: write
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository_owner }}/firestore-emulator
+      IMAGE_NAME: ${{ github.repository_owner }}/pubsub-emulator
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Get gcloud version
         id: gcloud-version
-        run: echo "gcloud-version=$(head -n 1 firestore/Dockerfile | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
+        run: echo "gcloud-version=$(head -n 1 pubsub/Dockerfile | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -64,7 +64,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v6
         with:
-          context: firestore
+          context: pubsub
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
@@ -85,14 +85,12 @@ jobs:
     needs:
       - build-publish
     services:
-      datastore-emulator:
-        image: ghcr.io/${{ github.repository_owner }}/firestore-emulator@${{ needs.build-publish.outputs.digest }}
+      pubsub-emulator:
+        image: ghcr.io/${{ github.repository_owner }}/pubsub-emulator@${{ needs.build-publish.outputs.digest }}
         ports:
-          - 8080:8080
-        env:
-          DATABASE_MODE: datastore-mode
+          - 8085:8085
     env:
-      DATASTORE_EMULATOR_HOST: localhost:8080
+      PUBSUB_EMULATOR_HOST: localhost:8085
     steps:
       - name: Test
-        run: curl -f localhost:8080
+        run: curl -f localhost:8085
