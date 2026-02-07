@@ -1,7 +1,7 @@
 # Google Cloud Emulators
 
-[![Publish Firestore Emulator](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/firestore-publish.yml)
-[![Publish Pub/Sub Emulator](https://github.com/178inaba/gcloud-emulators/actions/workflows/pubsub-publish.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/pubsub-publish.yml)
+[![Publish Firestore Emulator](https://github.com/178inaba/gcloud-emulators/actions/workflows/publish-firestore.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/publish-firestore.yml)
+[![Publish Pub/Sub Emulator](https://github.com/178inaba/gcloud-emulators/actions/workflows/publish-pubsub.yml/badge.svg)](https://github.com/178inaba/gcloud-emulators/actions/workflows/publish-pubsub.yml)
 
 ## Firestore / Datastore Emulator
 

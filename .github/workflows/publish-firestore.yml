@@ -1,12 +1,12 @@
-name: Publish Pub/Sub Emulator
+name: Publish Firestore Emulator
 
 on:
   push:
     branches:
       - main
     paths:
-      - pubsub/Dockerfile
-      - .github/workflows/pubsub-publish.yml
+      - firestore/Dockerfile
+      - .github/workflows/publish-firestore.yml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,7 +16,6 @@ jobs:
   build-publish:
     name: Build and Publish
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     permissions:
       attestations: write
       contents: read
@@ -24,7 +23,7 @@ jobs:
       packages: write
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository_owner }}/pubsub-emulator
+      IMAGE_NAME: ${{ github.repository_owner }}/firestore-emulator
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
@@ -45,7 +44,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Get gcloud version
         id: gcloud-version
-        run: echo "gcloud-version=$(head -n 1 pubsub/Dockerfile | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
+        run: echo "gcloud-version=$(head -n 1 firestore/Dockerfile | cut -d ':' -f 2 | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -65,7 +64,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v6
         with:
-          context: pubsub
+          context: firestore
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
@@ -83,16 +82,17 @@ jobs:
   test-published-image:
     name: Test Published Image
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     needs:
       - build-publish
     services:
-      pubsub-emulator:
-        image: ghcr.io/${{ github.repository_owner }}/pubsub-emulator@${{ needs.build-publish.outputs.digest }}
+      datastore-emulator:
+        image: ghcr.io/${{ github.repository_owner }}/firestore-emulator@${{ needs.build-publish.outputs.digest }}
         ports:
-          - 8085:8085
+          - 8080:8080
+        env:
+          DATABASE_MODE: datastore-mode
     env:
-      PUBSUB_EMULATOR_HOST: localhost:8085
+      DATASTORE_EMULATOR_HOST: localhost:8080
     steps:
       - name: Test
-        run: curl -f localhost:8085
+        run: curl -f localhost:8080
