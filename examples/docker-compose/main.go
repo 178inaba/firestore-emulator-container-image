@@ -7,6 +7,7 @@ import (
 
 	"cloud.google.com/go/datastore"
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/pubsub"
 )
 
 const projectID = "example-project"
@@ -15,7 +16,7 @@ type Issue struct {
 	Title string
 }
 
-// $ FIRESTORE_EMULATOR_HOST=localhost:8080 DATASTORE_EMULATOR_HOST=localhost:8081 go run main.go
+// $ FIRESTORE_EMULATOR_HOST=localhost:8080 DATASTORE_EMULATOR_HOST=localhost:8081 PUBSUB_EMULATOR_HOST=localhost:8085 go run main.go
 func main() {
 	ctx := context.Background()
 
@@ -25,6 +26,10 @@ func main() {
 
 	if err := datastoreAccess(ctx); err != nil {
 		slog.ErrorContext(ctx, "Datastore access", "error", err)
+	}
+
+	if err := pubsubAccess(ctx); err != nil {
+		slog.ErrorContext(ctx, "Pub/Sub access", "error", err)
 	}
 
 	slog.InfoContext(ctx, "Completed!")
@@ -76,5 +81,45 @@ func datastoreAccess(ctx context.Context) error {
 	}
 
 	slog.InfoContext(ctx, "Datastore", "issue", issue)
+	return nil
+}
+
+func pubsubAccess(ctx context.Context) error {
+	c, err := pubsub.NewClient(ctx, projectID)
+	if err != nil {
+		return fmt.Errorf("new client: %w", err)
+	}
+	defer c.Close()
+
+	topic, err := c.CreateTopic(ctx, "example-topic")
+	if err != nil {
+		return fmt.Errorf("create topic: %w", err)
+	}
+
+	sub, err := c.CreateSubscription(ctx, "example-subscription", pubsub.SubscriptionConfig{
+		Topic: topic,
+	})
+	if err != nil {
+		return fmt.Errorf("create subscription: %w", err)
+	}
+
+	result := topic.Publish(ctx, &pubsub.Message{
+		Data: []byte("Hello, Pub/Sub!"),
+	})
+	if _, err := result.Get(ctx); err != nil {
+		return fmt.Errorf("publish: %w", err)
+	}
+
+	var received string
+	cctx, cancel := context.WithCancel(ctx)
+	if err := sub.Receive(cctx, func(_ context.Context, msg *pubsub.Message) {
+		received = string(msg.Data)
+		msg.Ack()
+		cancel()
+	}); err != nil {
+		return fmt.Errorf("receive: %w", err)
+	}
+
+	slog.InfoContext(ctx, "Pub/Sub", "received", received)
 	return nil
 }
