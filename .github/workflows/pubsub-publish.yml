@@ -1,4 +1,4 @@
-name: Publish Pub/Sub Docker Image
+name: Publish Pub/Sub Emulator
 
 on:
   push:

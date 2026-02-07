@@ -1,4 +1,4 @@
-name: Publish Firestore Docker Image
+name: Publish Firestore Emulator
 
 on:
   push:
