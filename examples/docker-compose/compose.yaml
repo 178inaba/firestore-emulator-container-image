@@ -1,4 +1,4 @@
-name: firestore-emulator-example
+name: emulator-example
 
 services:
   firestore:
@@ -17,13 +17,23 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "localhost:8080"]
 
+  pubsub:
+    image: ghcr.io/178inaba/pubsub-emulator
+    ports:
+      - 8085:8085
+    healthcheck:
+      test: ["CMD", "curl", "-f", "localhost:8085"]
+
   app:
     build: .
     environment:
       FIRESTORE_EMULATOR_HOST: firestore:8080
       DATASTORE_EMULATOR_HOST: datastore:8080
+      PUBSUB_EMULATOR_HOST: pubsub:8085
     depends_on:
       firestore:
         condition: service_healthy
       datastore:
+        condition: service_healthy
+      pubsub:
         condition: service_healthy
