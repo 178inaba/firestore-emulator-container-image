@@ -19,7 +19,7 @@ jobs:
       datastore-emulator:
         image: ghcr.io/178inaba/firestore-emulator
         ports:
-          - 8080:8080
+          - "8080:8080"
         env:
           DATABASE_MODE: datastore-mode
     env:
@@ -38,14 +38,14 @@ services:
   firestore:
     image: ghcr.io/178inaba/firestore-emulator
     ports:
-      - 8080:8080
+      - "8080:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "localhost:8080"]
 
   datastore:
     image: ghcr.io/178inaba/firestore-emulator
     ports:
-      - 8081:8080
+      - "8081:8080"
     environment:
       DATABASE_MODE: datastore-mode
     healthcheck:
@@ -90,7 +90,7 @@ jobs:
       pubsub-emulator:
         image: ghcr.io/178inaba/pubsub-emulator
         ports:
-          - 8085:8085
+          - "8085:8085"
     env:
       PUBSUB_EMULATOR_HOST: localhost:8085
     steps:
@@ -107,7 +107,7 @@ services:
   pubsub:
     image: ghcr.io/178inaba/pubsub-emulator
     ports:
-      - 8085:8085
+      - "8085:8085"
     healthcheck:
       test: ["CMD", "curl", "-f", "localhost:8085"]
 
